@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-test
+  labels:
+    app: docker-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-test
+  template:
+    metadata:
+      labels:
+        app: docker-test
+    spec:
+      containers:
+        - name: web
+          image: docker-test:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5
